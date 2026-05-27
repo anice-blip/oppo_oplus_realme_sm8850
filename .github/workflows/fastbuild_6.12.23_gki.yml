@@ -596,6 +596,17 @@ jobs:
           export FAKETIME="@2025-05-25 13:00:00"
           echo "FAKESTAT=$FAKESTAT" >> $GITHUB_ENV
           echo "FAKETIME=$FAKETIME" >> $GITHUB_ENV
+          # 固定内核编译时间，让 uname -v / compile.h 显示为指定时间
+          export KBUILD_BUILD_VERSION=1
+          export KBUILD_BUILD_TIMESTAMP="Fri Dec  5 02:05:55 UTC 2025"
+          export KBUILD_BUILD_USER="build"
+          export KBUILD_BUILD_HOST="github-actions"
+          export SOURCE_DATE_EPOCH=$(date -u -d "$KBUILD_BUILD_TIMESTAMP" +%s)
+          echo "KBUILD_BUILD_VERSION=$KBUILD_BUILD_VERSION" >> $GITHUB_ENV
+          echo "KBUILD_BUILD_TIMESTAMP=$KBUILD_BUILD_TIMESTAMP" >> $GITHUB_ENV
+          echo "KBUILD_BUILD_USER=$KBUILD_BUILD_USER" >> $GITHUB_ENV
+          echo "KBUILD_BUILD_HOST=$KBUILD_BUILD_HOST" >> $GITHUB_ENV
+          echo "SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH" >> $GITHUB_ENV
           SO_DIR=$(pwd)
           export PRELOAD_LIBS="$SO_DIR/libfakestat.so $SO_DIR/libfaketimeMT.so"
           export REAL_CLANG_PATH="$WORKDIR/kernel_workspace/clang19/bin/clang"
